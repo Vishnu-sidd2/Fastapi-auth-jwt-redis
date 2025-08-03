@@ -1,5 +1,4 @@
 #logic with database , this file is repsobile for changes in our db creating nd all 
-
 from .models import User
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select
@@ -33,6 +32,8 @@ class UserService:
     )
     
     new_user.password_hash = generate_hashed_password(user_data_dict['password'])
+    
+    new_user.role = "User"
     
     session.add(new_user)
     
