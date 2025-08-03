@@ -10,6 +10,12 @@ class BookService:
     statement = select(Book).order_by(desc(Book.created_at))
     result = await session.exec(statement)
     return result.all()
+  
+  async def get_user_books(self,user_uid:str,session: AsyncSession):
+    
+    statement = select(Book).where(Book.user_uid == user_uid).order_by(desc(Book.created_at))
+    result = await session.exec(statement)
+    return result.all()
 
 #fetching a specified book 
   async def get_book(self,book_uid:str , session:AsyncSession):
@@ -21,9 +27,12 @@ class BookService:
      return book if book is not None else None 
 
 #creating a book in db
-  async def create_books(self,book_data,session:AsyncSession):
+  async def create_books(self,book_data,user_uid:str,session:AsyncSession):
     
     new_book = Book(**book_data.dict())
+    
+    new_book.user_uid = user_uid
+    
     session.add(new_book)
     await session.commit()
     await session.refresh(new_book)  # Refresh to get UID and timestamps

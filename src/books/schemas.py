@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 import uuid 
 from datetime import datetime
+from typing import Optional
 
 class Bookmodel(BaseModel):
   uid:uuid.UUID
@@ -17,6 +18,7 @@ class BookCreatemodel(BaseModel):
   title:str
   author:str
   year:int
+  user_uid: Optional[uuid.UUID] = None 
   
   class Config:
     from_attributes=True
